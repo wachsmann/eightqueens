@@ -49,11 +49,14 @@ public class App
                 queens[row] = column;
                 queens[column] = row;
                 bruteForce(queens,row);
-            break;
-            case 1:// other
 
+                break;
+            case 1:// Backtrack
+                enumerate(queens, 0);
+                
+                break;
             default:
-            System.out.print("Tipo inválido!");
+                System.out.print("Tipo inválido!");
         }
     }
     private static void bruteForce(int[] queens,int row) {
