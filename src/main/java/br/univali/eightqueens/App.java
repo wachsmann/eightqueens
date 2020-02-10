@@ -48,8 +48,8 @@ public class App
                 
                 queens[row] = column;
                 queens[column] = row;
-                bruteForce(queens,row);
-
+                
+                bruteForce(queens, row);
                 break;
             case 1:// Backtrack
                 enumerate(queens, 0);
@@ -63,42 +63,38 @@ public class App
        
         System.out.println("searching...");
        
-        permute(queens, 0, queens.length-1,row);
+        permute(queens,row);
     }
 
-        /** 
-     * permutation function 
-     * @param str string to calculate permutation for 
-     * @param l starting index 
-     * @param r end index 
-     */
-    private static void permute(int[] queens, int l, int r,int row) 
-    {   
 
-        if (l == r){ 
-
-            if (isAllConsistent(queens)){
-               printQueens(queens);
-                System.out.println();
-                return;
-            }
-            
-           
-        }else
-        { 
-            for (int i = l; i <= r; i++) 
-            { 
-                if(l != row && i != row)
-                    queens = swap(queens,l,i); 
-
-                permute(queens, l+1, r,row); 
-
-                if(l != row && i != row)
-                    queens = swap(queens,l,i); 
-            } 
-        } 
-    } 
   
+
+    private static void permute(int[] queens,int row){
+        Boolean found = false;
+        while(!found){
+            for (int i = 0; i < queens.length; i++) {
+                if(found) break;   
+                for (int j = 1; j < queens.length; j++) {
+                    if(found) break;
+                    if(i != row && j != row)
+                        queens = swap(queens, i, j);
+                        //for (int m = 0; m < queens.length; m++) {System.out.print(queens[m]);System.out.println("");}
+                        if(isAllConsistent(queens)){found=true; break;} 
+                    
+                    for (int k = queens.length-j; k >= 0; k--) {
+                        if(j != row && k != row)
+                            queens = swap(queens, j, k);
+                            //for (int m = 0; m < queens.length; m++) {System.out.print(queens[m]);}System.out.println("");
+                            if(isAllConsistent(queens)){found=true; break;}  
+                    }
+                    
+                } 
+                        
+            }
+        }
+        printQueens(queens);
+
+    }
     /** 
      * Swap int at position 
      * @param a string value 
@@ -185,8 +181,12 @@ public class App
             for (int i = 0; i < n; i++) {
                 q[k] = i;
                 if (isConsistent(q, k)) enumerate(q, k+1);
+            
             }
+
         }
     }  
+
+
 
 }
