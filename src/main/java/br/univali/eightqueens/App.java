@@ -1,4 +1,4 @@
-package javaapplication9;
+package javaapplication1;
 
 import java.util.Scanner;
 
@@ -6,27 +6,32 @@ import java.util.Scanner;
  * Hello world!
  *
  */
-public class javaApplication9 
+public class JavaApplication1 
 {
 
     static Boolean flag = false;
-    static int[] solution = new int[8];
+    static int[] solution;
+    static int x = 0;
     
     public static void main(String[] args) {
-        int n = 8;
-    
-        //enumerate(n);
+        
         
         Scanner input = new Scanner(System.in);
     	
+        System.out.print("Insira o número de raínhas: ");
+        int n = input.nextInt();
+        solution = new int[n];
+                
         System.out.println("Insira a primeira rainha ("+n+"x"+n+")... ");
         System.out.println("Insira a linha:");
         int row = input.nextInt();
         System.out.print("Insira a coluna:");
         int column = input.nextInt();
-        System.out.print("Força Bruta (0) - Other Solution...(1):");
+        
+        System.out.print("Força Bruta (0) - Back Tracking (1):");
         int solutionType = input.nextInt();
-        if(outRangeChecker(n,row,column)) solve(solutionType,n,row,column);
+        if(outRangeChecker(n,row,column)) 
+            solve(solutionType,n,row,column);
         
     }
     private static Boolean outRangeChecker(int n, int row, int column){
@@ -50,15 +55,26 @@ public class javaApplication9
                 
                 queens[row] = column;
                 queens[column] = row;
-                bruteForce(queens,row);
                 
-                System.out.println("solução abaixo");
-              //  printQueens(solution);
+                long beggining = System.currentTimeMillis();
+                
+                bruteForce(queens,row);
+
+                long ending = System.currentTimeMillis();
+                
+                System.out.println("Tempo total da força bruta: " +(ending - beggining));
+                System.out.println("Número de iterações: " + x);
 
                 break;
             case 1:// Backtrack
-                enumerate(queens, 0);
                 
+                long beggining2 = System.currentTimeMillis();
+
+                enumerate(queens, 0, row);
+                
+                long ending2 = System.currentTimeMillis();
+                System.out.println("Tempo total do back tracking: " +(ending2 - beggining2));
+                System.out.println("Número de iterações: " + x);
                 break;
             default:
                 System.out.print("Tipo inválido!");
@@ -83,6 +99,7 @@ public class javaApplication9
         if (l == r){ 
 
             if (isAllConsistent(queens)){
+                x++;
                 flag = true;
                 solution = queens;
                 printQueens(solution);
@@ -104,6 +121,7 @@ public class javaApplication9
 
                     if(l != row && i != row)
                         queens = swap(queens,l,i); 
+                    x++;
                 } 
             }
         } 
@@ -181,30 +199,28 @@ public class javaApplication9
         System.out.println();
     }
 
-   /***************************************************************************
-    *  Try all permutations using backtracking
-    ***************************************************************************/
-    public static void enumerate(int n) {
-        int[] a = new int[n];
-        enumerate(a, 0);
-    }
     
-    public static Boolean enumerate(int[] q, int k) {
+    public static Boolean enumerate(int[] q, int k, int row) {
         int n = q.length;
         if (k == n) {
+            x++;
             flag = true;
             solution = q;
+            printQueens(solution);
             return true;
             //printQueens(q);
         } else {
             if(flag) return true;
             for (int i = 0; i < n; i++) {
                 if(flag) return true;
-                q[k] = i;
+                if(k != row)
+                    q[k] = i;  
+                
                 if (isConsistent(q, k)) {
-                    enumerate(q, k + 1);
+                    enumerate(q, k + 1,row);
                 }
-
+                
+                x++;
             }
 
         }
