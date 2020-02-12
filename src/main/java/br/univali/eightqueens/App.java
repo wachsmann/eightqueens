@@ -15,6 +15,9 @@ public class JavaApplication1
     
     public static void main(String[] args) {
         
+       // testeAlgs();
+        
+        
         
         Scanner input = new Scanner(System.in);
     	
@@ -33,11 +36,16 @@ public class JavaApplication1
         if(outRangeChecker(n,row,column)) 
             solve(solutionType,n,row,column);
         
+        
     }
     private static Boolean outRangeChecker(int n, int row, int column){
         return row < n && row >= 0 && column < n && column >= 0 ? true : false;        
     }
     private static void solve(int solutionType,int n, int row,int column) {
+        
+
+
+        
         //create vector 
         int [] queens = new int[n];
 
@@ -69,7 +77,8 @@ public class JavaApplication1
             case 1:// Backtrack
                 
                 long beggining2 = System.currentTimeMillis();
-
+                queens[row] = column;
+                
                 enumerate(queens, 0, row);
                 
                 long ending2 = System.currentTimeMillis();
@@ -185,6 +194,7 @@ public class JavaApplication1
         }  
         System.out.println();
     }
+    
     public static void printQueensNumbers(int[] q) {
 
         int n = q.length;
@@ -198,7 +208,6 @@ public class JavaApplication1
         }  
         System.out.println();
     }
-
     
     public static Boolean enumerate(int[] q, int k, int row) {
         int n = q.length;
@@ -226,5 +235,4 @@ public class JavaApplication1
         }
         return false;
     }
-
 }
